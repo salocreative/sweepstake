@@ -1,0 +1,427 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Fustat", system-ui, sans-serif;
+}
+
+.shell {
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #f0e6cc;
+  overflow-x: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #1a1200 0%, #0a0a0f 50%, #001a1a 100%);
+  border-bottom: 2px solid #ffd700;
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.header-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.title {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ffd700, #fff8dc, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.2rem;
+}
+
+.subtitle {
+  color: #aaa;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.intro {
+  color: #bba;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.intro strong {
+  color: #ffd700;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.tier-card {
+  border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left-width: 3px;
+}
+
+.tier-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tier-card-teams {
+  color: #777;
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.btn-start {
+  display: block;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #ffd700, #cc9900);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 3.5rem;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 24px #ffd70066;
+  animation: pulse 1.5s infinite;
+}
+
+.tier-pills {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.tier-pill {
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: all 0.3s;
+}
+
+.draw-card {
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: 2px solid;
+}
+
+.draw-tier-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.draw-team {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 900;
+  color: #f0e6cc;
+}
+
+.hint {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.btn-draw {
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+}
+
+.picking-label {
+  color: #666;
+  font-size: 0.78rem;
+  margin-bottom: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.shuffle-name {
+  font-size: clamp(1.5rem, 6vw, 2.85rem);
+  font-weight: 900;
+  min-height: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  animation: nameShuffleFlicker 0.078s linear infinite alternate;
+}
+
+.reveal-block {
+  animation: nameRevealBurst 0.85s cubic-bezier(0.2, 0.82, 0.28, 1.06) forwards;
+}
+
+.reveal-goes {
+  color: #888;
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: labelFadeIn 0.35s ease 0.15s both;
+}
+
+.reveal-name {
+  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  font-weight: 900;
+}
+
+.btn-next {
+  margin-top: 1.2rem;
+  border-radius: 8px;
+  padding: 0.7rem 2rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: buttonFadeUp 0.45s ease 0.45s both;
+}
+
+.btn-next-muted {
+  background: #1a1a2e;
+}
+
+.btn-next-last {
+  background: linear-gradient(135deg, #ffd700, #cc9900);
+  color: #000;
+}
+
+.drawn-heading {
+  color: #555;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.drawn-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.drawn-chip {
+  border-radius: 20px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.78rem;
+  color: #ccc;
+  white-space: nowrap;
+  border: 1px solid;
+}
+
+.results-title {
+  text-align: center;
+  color: #ffd700;
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+  font-weight: 900;
+}
+
+.results-sub {
+  text-align: center;
+  color: #888;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+}
+
+.person-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.person-card {
+  background: #111118;
+  border: 1px solid #ffd70033;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.person-head {
+  background: linear-gradient(90deg, #1a1200, #111118);
+  padding: 0.6rem 1.1rem;
+  border-bottom: 1px solid #ffd70022;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.person-num {
+  background: #ffd700;
+  color: #000;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.person-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffd700;
+}
+
+.person-teams {
+  padding: 0.7rem 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.team-chip {
+  border-radius: 20px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.82rem;
+  color: #f0e6cc;
+  white-space: nowrap;
+  border: 1px solid;
+}
+
+.center {
+  text-align: center;
+}
+
+.btn-reset {
+  background: transparent;
+  color: #ffd700;
+  border: 1px solid #ffd70066;
+  border-radius: 8px;
+  padding: 0.7rem 2rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 24px currentColor;
+  }
+
+  50% {
+    box-shadow: 0 4px 40px currentColor;
+  }
+}
+
+@keyframes nameShuffleFlicker {
+  0% {
+    opacity: 0.88;
+    transform: translateY(-2px) scale(0.995);
+    filter: blur(0.25px);
+    letter-spacing: 0.06em;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(3px) scale(1.02);
+    filter: blur(0);
+    letter-spacing: 0.03em;
+  }
+}
+
+@keyframes nameRevealBurst {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.45) rotate(-3deg);
+    filter: blur(6px);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.09) rotate(1.8deg);
+    filter: blur(0);
+  }
+
+  72% {
+    transform: translateY(2px) scale(0.97) rotate(-0.4deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes labelFadeIn {
+  from {
+    opacity: 0;
+    letter-spacing: 0.35em;
+  }
+
+  to {
+    opacity: 1;
+    letter-spacing: 0.1em;
+  }
+}
+
+@keyframes buttonFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
