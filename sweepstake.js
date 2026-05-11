@@ -98,6 +98,111 @@ const FLAG_EMOJI = {
   Bolivia: "🇧🇴",
 };
 
+/** One World Cup trivia line per nation (sources: supplied team facts). */
+const TEAM_FACTS = {
+  Qatar:
+    "Qatar became the first host nation eliminated in the group stage at a World Cup, crashing out on home soil in 2022.",
+  Jordan:
+    "Jordan only qualified for their first ever World Cup in 2026 — a historic moment for a nation whose team is nicknamed 'Al-Nashama' (The Nobles).",
+  Honduras:
+    "Honduras once played a qualifier so contentious it contributed to the outbreak of the actual 1969 Football War with El Salvador.",
+  "Costa Rica":
+    "Costa Rica reached the quarter-finals in 2014, beating Italy, Uruguay and Greece before losing to the Netherlands on penalties.",
+  "New Zealand":
+    "New Zealand are the only team to play at a World Cup, not concede a single goal, and still go home — they drew all three games in 2010.",
+  "Czech Republic":
+    "Czechoslovakia reached the World Cup final twice, in 1934 and 1962, losing both times — still one of football's great nearly-stories.",
+  Paraguay:
+    "Paraguay hold the record for the most penalty shootout wins in World Cup history, with three victories from the spot.",
+  Bolivia:
+    "Bolivia's home ground in La Paz sits at 3,600 metres above sea level — visiting teams regularly struggle just to breathe, let alone play.",
+
+  "Saudi Arabia":
+    "Saudi Arabia pulled off one of the biggest upsets ever in 2022, beating eventual champions Argentina 2-1 in the group stage.",
+  "South Africa":
+    "South Africa hosted the 2010 World Cup — the first African nation to do so — and introduced the world to the vuvuzela.",
+  Scotland:
+    "Scotland played in the world's very first international football match, drawing 0-0 with England in 1872.",
+  Hungary:
+    "Hungary's golden generation of the 1950s went 32 games unbeaten and hold the record for the biggest World Cup win: 10-1 vs El Salvador in 1982.",
+  Algeria:
+    "Algeria's 1982 win over West Germany is still considered one of the greatest upsets in World Cup history.",
+  Uzbekistan:
+    "Uzbekistan have never previously qualified for a World Cup — 2026 marks their historic debut on the world stage.",
+  Panama:
+    "When Panama scored their first ever World Cup goal in 2018, the entire nation reportedly came to a standstill. The scorer, Felipe Baloy, was 37 years old.",
+  "DR Congo":
+    "DR Congo, as Zaire, were the first sub-Saharan African nation at a World Cup in 1974 — though they conceded 14 goals across just three games.",
+
+  Iran:
+    "Iran's 1998 World Cup win over the USA was one of the most politically charged football matches ever played.",
+  Nigeria:
+    "Nigeria's golden generation in the 1990s — featuring Okocha, Kanu and Yekini — captivated the world and won Olympic gold in 1996.",
+  Austria:
+    "Austria finished third at the 1954 World Cup, which featured one of the most remarkable matches ever played — a 7-5 thriller against Switzerland.",
+  Turkey:
+    "Hakan Sukur scored the fastest goal in World Cup history — just 11 seconds into the 2002 third-place playoff against South Korea.",
+  "Ivory Coast":
+    "Ivory Coast were drawn into the same group as Argentina, Greece and Nigeria at 2010 — widely voted the tournament's Group of Death.",
+  Venezuela:
+    "Venezuela were the only South American country never to have qualified for a World Cup before 2026, making this a genuinely historic occasion.",
+  Canada:
+    "Canada's last World Cup before 2022 was in 1986, where they played three games, scored zero goals and finished bottom of their group.",
+  Cameroon:
+    "Roger Milla became a global icon at Italia 90 aged 38, dancing at the corner flag after every goal and dragging Cameroon to the quarter-finals.",
+
+  Mexico:
+    "Mexico have reached the round of 16 at seven consecutive World Cups — a run their fans call 'El Quinto Partido', always chasing that elusive fifth game.",
+  "South Korea":
+    "South Korea co-hosted 2002 and became the first Asian nation to reach the semi-finals, knocking out Spain and Italy along the way.",
+  Switzerland:
+    "Switzerland have never conceded a goal in normal time in a World Cup knockout match — they've only ever gone out on penalties or in extra time.",
+  Serbia:
+    "Yugoslavia, the predecessor to Serbia, were one of the founding nations of the World Cup and finished fourth in the very first tournament in 1930.",
+  Denmark:
+    "Denmark weren't even supposed to be at Euro 92 — they replaced Yugoslavia at 10 days notice and won the whole thing.",
+  Ecuador:
+    "Ecuador became only the second South American team ever to win their opening World Cup match when they debuted in 2002.",
+  Egypt:
+    "Egypt are Africa's most decorated national team, having won the Africa Cup of Nations a record seven times.",
+  Australia:
+    "Tim Cahill's 2014 volley against the Netherlands — struck on the half-turn with the outside of his boot — is regularly voted one of the greatest World Cup goals ever.",
+
+  Belgium:
+    "Belgium spent 1,470 days as the world's number one ranked team — longer than any other nation in FIFA ranking history.",
+  Uruguay:
+    "Uruguay won the first ever World Cup in 1930 as hosts, then repeated the trick in 1950 with the 'Maracanazo' — shocking Brazil in front of 200,000 people.",
+  Colombia:
+    "James Rodriguez won the 2014 Golden Boot with six goals and became one of the tournament's most iconic players almost overnight.",
+  Croatia:
+    "Croatia reached the 2018 World Cup final as a nation of just 4 million people — one of the smallest ever to play on that stage.",
+  Morocco:
+    "Morocco became the first African and Arab nation to reach a World Cup semi-final, stunning Portugal and Spain at Qatar 2022.",
+  Japan:
+    "Japan have qualified for every World Cup since 1998 and became famous worldwide for their fans cleaning the stadium after every single match.",
+  USA:
+    "The USA beat England 1-0 at the 1950 World Cup in one of the biggest upsets in football history — a result so unlikely that some newspapers assumed it was a typo.",
+  Senegal:
+    "Senegal beat France — the defending world champions — in their very first World Cup match ever in 2002, eventually reaching the quarter-finals.",
+
+  France:
+    "France won the World Cup in 1998 on home soil, then again in 2018 — their 2018 squad featured 15 players of African heritage, celebrated as a symbol of modern France.",
+  Brazil:
+    "Brazil are the only nation to have appeared in every single World Cup — all 22 tournaments — and have won it a record five times.",
+  England:
+    "England have won the World Cup exactly once, in 1966, and the winner of the final is still technically disputed — Geoff Hurst's shot may or may not have crossed the line.",
+  Argentina:
+    "Argentina's 2022 win in Qatar ended a 36-year wait and finally gave Lionel Messi the one trophy that had eluded him throughout his entire career.",
+  Spain:
+    "Spain became the first team to win a World Cup having lost their opening game, recovering from a defeat to Switzerland to lift the trophy in 2010.",
+  Germany:
+    "Germany have appeared in more World Cup finals than any other nation — eight in total — winning four of them.",
+  Portugal:
+    "Eusebio finished top scorer at the 1966 World Cup with nine goals, a record that stood for decades and made him the first global superstar from African football.",
+  Netherlands:
+    "The Netherlands have reached three World Cup finals — 1974, 1978 and 2010 — and lost all three, cementing their reputation as football's greatest nearly-men.",
+};
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -360,7 +465,14 @@ function renderDrawing() {
   inner.push(
     el("div", { class: "draw-tier-label", style: { color: current.tierColor }, text: current.tierLabel }),
   );
-  inner.push(el("div", { class: "draw-team", text: `${flag(current.team)} ${current.team}` }));
+
+  const teamFact = TEAM_FACTS[current.team];
+  const teamBlockKids = [
+    el("div", { class: "draw-team", text: `${flag(current.team)} ${current.team}` }),
+  ];
+  if (teamFact)
+    teamBlockKids.push(el("p", { class: "draw-team-fact", text: teamFact }));
+  inner.push(el("div", { class: "draw-team-block" }, teamBlockKids));
 
   if (!state.shown) {
     if (state.shuffleRunning) {
