@@ -1,34 +1,62 @@
 name: Deploy to GitHub Pages
 
-# Publishes the Vite production build so static assets (/sweepstake/assets/…) exist on the site.
-# After the first successful run: Repo Settings → Pages → Source → Deploy from branch → gh-pages → / (root).
-# If you publish the repo root of main instead, browsers load /src/main.jsx (development entry) → 404 and a blank screen.
+# The live site MUST NOT use Settings → Pages → main → / (root). That publishes the Vite
+# dev template, which loads /src/main.jsx from the domain root (404 → blank screen).
+#
+# Point Pages at folder /docs: Settings → Pages → Deploy from branch → main → Folder /docs
+# This workflow copies each production build into docs/ after every push to main.
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: gh-pages-${{ github.repository }}
+  group: pages-publish-${{ github.repository }}
   cancel-in-progress: true
 
 jobs:
-  build-and-publish:
+  publish-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
+
       - run: npm ci
       - run: npm run build
-      - uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
+
+      - name: Sync production build → docs/
+        run: |
+          rm -rf docs
+          mkdir -p docs
+          rsync -a dist/ docs/
+
+      - name: Commit and push docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --staged --quiet; then
+            echo "No docs/ changes."
+            exit 0
+          fi
+          git commit -m "chore(site): sync production build to docs [skip ci]"
+          git push
+
+      - name: Pages setup reminder
+        run: |
+          cat <<'EOS' >> "$GITHUB_STEP_SUMMARY"
+          ### GitHub Pages
+          **`docs/`** was updated from `dist/` (production bundle).
+
+          If the site looks blank at `https://<org>.github.io/sweepstake/`, change **Repo → Settings → Pages** so the source folder is **`/docs`** (branch **main**) — **not repository root**.
+          EOS
