@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Tiers ordered 6 -> 1 for reveal order
 const GROUPS = [
@@ -88,7 +88,9 @@ export default function Sweepstake() {
   const [allResults, setAllResults] = useState(null); // full draw data
   const [reveals, setReveals] = useState([]); // sequence of reveals
   const [revealStep, setRevealStep] = useState(0); // which step we're on
-  const [shown, setShown] = useState(false); // whether current step is revealed
+  const [shown, setShown] = useState(false); // whether current step is revealed (after shuffle)
+  const [shuffleRunning, setShuffleRunning] = useState(false);
+  const [shuffleLabel, setShuffleLabel] = useState("");
 
   function startDraw() {
     const drawData = buildDraw();
@@ -113,12 +115,58 @@ export default function Sweepstake() {
     setReveals(sequence);
     setRevealStep(0);
     setShown(false);
+    setShuffleRunning(false);
+    setShuffleLabel("");
     setPhase("drawing");
   }
 
   function revealCurrent() {
-    setShown(true);
+    if (shuffleRunning) return;
+    setShuffleRunning(true);
   }
+
+  const current = reveals[revealStep];
+
+  useEffect(() => {
+    if (!shuffleRunning || !current || phase !== "drawing") return undefined;
+
+    let cancelled = false;
+    let tick = 0;
+    const winner = current.name;
+    let timeoutId;
+    const decoys = NAMES.filter((n) => n !== winner);
+    let lastShown = "";
+
+    const totalTicks = 28;
+
+    const step = () => {
+      if (cancelled) return;
+      tick += 1;
+      const progress = tick / totalTicks;
+      const delay = 26 + Math.pow(progress, 2.65) * 280;
+
+      if (tick < totalTicks) {
+        let pick = decoys[Math.floor(Math.random() * decoys.length)];
+        if (pick === lastShown && decoys.length > 1) {
+          pick = decoys.find((n) => n !== lastShown) ?? pick;
+        }
+        lastShown = pick;
+        setShuffleLabel(pick);
+        timeoutId = window.setTimeout(step, delay);
+        return;
+      }
+
+      setShuffleLabel(winner);
+      setShuffleRunning(false);
+      setShown(true);
+    };
+
+    timeoutId = window.setTimeout(step, 80);
+    return () => {
+      cancelled = true;
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
+  }, [shuffleRunning, current, phase]);
 
   function nextStep() {
     const next = revealStep + 1;
@@ -127,6 +175,8 @@ export default function Sweepstake() {
     } else {
       setRevealStep(next);
       setShown(false);
+      setShuffleRunning(false);
+      setShuffleLabel("");
     }
   }
 
@@ -136,9 +186,10 @@ export default function Sweepstake() {
     setReveals([]);
     setRevealStep(0);
     setShown(false);
+    setShuffleRunning(false);
+    setShuffleLabel("");
   }
 
-  const current = reveals[revealStep];
   const isLastStep = revealStep >= reveals.length - 1;
 
   // Group reveals done so far by person for summary sidebar
@@ -273,29 +324,91 @@ export default function Sweepstake() {
 
                   {!shown ? (
                     <div>
-                      <div style={{ color: "#888", fontSize: "0.85rem", marginBottom: "1rem" }}>Who gets this one?</div>
-                      <button onClick={revealCurrent} style={{
-                        background: `linear-gradient(135deg, ${current.tierColor}, ${current.tierColor}aa)`,
-                        color: "#000",
-                        border: "none",
-                        borderRadius: "8px",
-                        padding: "0.8rem 2.5rem",
-                        fontSize: "1rem",
-                        fontFamily: "inherit",
-                        fontWeight: "700",
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        cursor: "pointer",
-                        boxShadow: `0 4px 20px ${current.tierColor}55`,
-                        animation: "pulse 1.5s infinite",
-                      }}>
-                        Draw a Name 🎲
-                      </button>
+                      {shuffleRunning ? (
+                        <div style={{ width: "100%" }}>
+                          <div
+                            style={{
+                              color: "#666",
+                              fontSize: "0.78rem",
+                              marginBottom: "0.85rem",
+                              letterSpacing: "0.35em",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Picking...
+                          </div>
+                          <div
+                            aria-live="polite"
+                            aria-busy="true"
+                            style={{
+                              fontSize: "clamp(1.5rem, 6vw, 2.85rem)",
+                              fontWeight: "900",
+                              color: current.tierColor,
+                              minHeight: "3.75rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              letterSpacing: "0.06em",
+                              textShadow: `0 0 28px ${current.tierColor}55`,
+                              animation: "nameShuffleFlicker 0.078s linear infinite alternate",
+                              lineHeight: 1.1,
+                            }}
+                          >
+                            {shuffleLabel || "\u2022\u2022\u2022"}
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div style={{ color: "#888", fontSize: "0.85rem", marginBottom: "1rem" }}>
+                            Who gets this one?
+                          </div>
+                          <button onClick={revealCurrent} style={{
+                            background: `linear-gradient(135deg, ${current.tierColor}, ${current.tierColor}aa)`,
+                            color: "#000",
+                            border: "none",
+                            borderRadius: "8px",
+                            padding: "0.8rem 2.5rem",
+                            fontSize: "1rem",
+                            fontFamily: "inherit",
+                            fontWeight: "700",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            cursor: "pointer",
+                            boxShadow: `0 4px 20px ${current.tierColor}55`,
+                            animation: "pulse 1.5s infinite",
+                          }}>
+                            Draw a Name 🎲
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div style={{ animation: "fadeSlide 0.4s ease both" }}>
-                      <div style={{ color: "#888", fontSize: "0.8rem", marginBottom: "0.4rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Goes to</div>
-                      <div style={{ fontSize: "clamp(1.6rem, 5vw, 2.5rem)", fontWeight: "900", color: current.tierColor }}>
+                    <div
+                      key={`reveal-${revealStep}-${current.name}`}
+                      style={{
+                        animation: "nameRevealBurst 0.85s cubic-bezier(0.2, 0.82, 0.28, 1.06) forwards",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#888",
+                          fontSize: "0.8rem",
+                          marginBottom: "0.4rem",
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
+                          animation: "labelFadeIn 0.35s ease 0.15s both",
+                        }}
+                      >
+                        Goes to
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "clamp(1.6rem, 5vw, 2.5rem)",
+                          fontWeight: "900",
+                          color: current.tierColor,
+                          textShadow: `0 0 36px ${current.tierColor}66, 0 2px 0 #0006`,
+                        }}
+                      >
                         {current.name}
                       </div>
                       <button onClick={nextStep} style={{
@@ -311,6 +424,7 @@ export default function Sweepstake() {
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
                         cursor: "pointer",
+                        animation: "buttonFadeUp 0.45s ease 0.45s both",
                       }}>
                         {isLastStep ? "See Full Results 🏆" : "Next Draw →"}
                       </button>
@@ -418,6 +532,48 @@ export default function Sweepstake() {
         }
         @keyframes fadeSlide {
           from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes nameShuffleFlicker {
+          0% {
+            opacity: 0.88;
+            transform: translateY(-2px) scale(0.995);
+            filter: blur(0.25px);
+            letter-spacing: 0.06em;
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(3px) scale(1.02);
+            filter: blur(0);
+            letter-spacing: 0.03em;
+          }
+        }
+        @keyframes nameRevealBurst {
+          0% {
+            opacity: 0;
+            transform: translateY(18px) scale(0.45) rotate(-3deg);
+            filter: blur(6px);
+          }
+          40% {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.09) rotate(1.8deg);
+            filter: blur(0);
+          }
+          72% {
+            transform: translateY(2px) scale(0.97) rotate(-0.4deg);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotate(0deg);
+            filter: blur(0);
+          }
+        }
+        @keyframes labelFadeIn {
+          from { opacity: 0; letter-spacing: 0.35em; }
+          to { opacity: 1; letter-spacing: 0.1em; }
+        }
+        @keyframes buttonFadeUp {
+          from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
