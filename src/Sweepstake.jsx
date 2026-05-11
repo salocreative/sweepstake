@@ -148,7 +148,6 @@ export default function Sweepstake() {
     <div style={{
       minHeight: "100vh",
       background: "#0a0a0f",
-      fontFamily: "'Georgia', 'Times New Roman', serif",
       color: "#f0e6cc",
       overflowX: "hidden",
     }}>
